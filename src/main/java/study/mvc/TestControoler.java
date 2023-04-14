@@ -5,6 +5,19 @@ import org.springframework.http.MediaType;
 import org.springframework.web.bind.annotation.*;
 
 import java.nio.charset.StandardCharsets;
+import java.sql.ResultSet;
+import java.time.LocalDateTime;
+import java.util.HashMap;
+import java.util.Map;
+
+class SuccessResult{
+    public String result = "success";
+}
+class Result{
+    public String result;
+    public Integer code;
+}
+
 
 @RestController
 @RequestMapping("/test")
@@ -51,5 +64,37 @@ public class TestControoler {
     public String count(){
         return "" + (++count);
     }
+    @GetMapping(value = "/result_test", produces = MediaType.APPLICATION_JSON_VALUE)
+    public SuccessResult resultTest(){
+        return new SuccessResult();
+    }
+    @GetMapping(value = "/result_test2",produces = MediaType.APPLICATION_JSON_VALUE)
+    public Result resultTest2(){
+        Result result = new Result();
+        result.result = "success";
+        result.code = 1000;
+
+        return result;
+    }
+    @GetMapping(value = "/result_test3", produces = MediaType.APPLICATION_JSON_VALUE)
+    public Map<String, Object> resultTest3(){
+        Map<String, Object> result = new HashMap<>();
+        result.put("result","success");
+        result.put("code",1000);
+
+        return result;
+    }
+
+//    현재 날짜 시간 출력하기
+    @GetMapping(value = "/now", produces = MediaType.APPLICATION_JSON_VALUE)
+    public Map<String, Object> now(){
+        Map<String,Object> result = new HashMap<>();
+        LocalDateTime dt = LocalDateTime.now();
+        result.put("date", dt.getYear() + "-"+dt.getMonthValue() + "-" + dt.getDayOfMonth());
+        result.put("time", dt.getHour()+":"+dt.getMinute()+":"+dt.getSecond());
+
+        return result;
+    }
+
 }
 
